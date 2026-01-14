@@ -1,5 +1,7 @@
 # Repositorio de Skills de IA
 
+> **⚠️ Regla Importante:** Antes de realizar cualquier operación de `commit` o `push` a GitHub, el agente debe solicitar explícitamente permiso al usuario.
+
 Este repositorio contiene una colección modular de habilidades (skills) para agentes de IA, reorganizadas en categorías funcionales.
 
 ## Inventario de Skills por Categoría
@@ -13,6 +15,7 @@ Herramientas para la optimización y gestión en tiendas de aplicaciones.
 
 ### 🧪 QA & Testing (`/qa-testing`)
 Soluciones para pruebas automatizadas y aseguramiento de calidad.
+- **`android-native-suite`**: (NUEVO) Suite especializada para Android (Planificador, Generador, Ejecutor).
 - `automating-mobile-app-testing`: Automatización de pruebas móviles.
 - `mobile-testing`: Pruebas generales para móviles.
 - `testing-mobile-apps`: Enfoque específico en testeo de apps.
