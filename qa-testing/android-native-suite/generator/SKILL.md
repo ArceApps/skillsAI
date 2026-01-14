@@ -1,60 +1,46 @@
 ---
 name: android-test-generator
-description: Genera código de test en Kotlin para Android usando Robot Pattern, Mockk y Espresso. Código en Inglés, comentarios en Español.
-version: 1.1.0
+description: Genera código Kotlin de test. Prioriza Unit Tests en la JVM. Indica siempre la ruta de destino correcta.
+version: 1.2.0
 ---
 
 # Android Test Generator
 
-Esta skill es el programador experto. Transforma un plan de pruebas en código Kotlin ejecutable, siguiendo las mejores prácticas de Android Nativo.
+Esta skill transforma planes en código, priorizando la ejecución en la JVM local (Unit Tests) para ahorrar tiempo y recursos.
 
-## 🎯 Objetivo
-Generar una clase de test completa y compilable basándose en el plan proporcionado.
+## 📝 Reglas de Oro
+1.  **Ubicación Obligatoria:** La primera línea del output debe indicar la ruta de destino (ej: `// Path: src/test/java/com/package/MyTest.kt`).
+2.  **Mocking Extremo:** Usar **Mockk** para todas las dependencias. Si una clase usa algo de Android (ej: `Uri.parse`), sugerir un mock o un wrapper para mantener el test como Unitario.
+3.  **Corrutinas:** Siempre usar `runTest` y `TestDispatcher` para Unit Tests de ViewModels o Repositories.
 
-## 📝 Reglas de Codificación
-1.  **Idioma:** Código (nombres variables/fun) en **Inglés**. KDoc/Comentarios en **Español**.
-2.  **Patrones de Diseño:**
-    *   Para **UI Tests (Espresso)** complejos, implementar el **Robot Pattern** (clases auxiliares para abstraer la interacción con la vista).
-    *   Para **Unit Tests**, usar `Given-When-Then` o `Arrange-Act-Assert`.
-3.  **Frameworks:**
-    *   **Unit:** JUnit 4/5, Mockk, Kotlin Coroutines Test (`runTest`, `StandardTestDispatcher`).
-    *   **UI:** Espresso, AndroidX Test (Core, Rules, Runner).
-    *   **Aserciones:** Truth (Google) preferido, o JUnit Assert.
+## 📥 Estructura de Salida
+1.  Comentario con la ruta de destino.
+2.  Bloque de código Kotlin (Código en Inglés, Comentarios en Español).
+3.  Explicación breve en Español de cómo correr este test específico.
 
-## 🧠 Snippets Recomendados (Casos Borde)
-
-### Corrutinas (Main Dispatcher)
+## 🧠 Snippet para Unit Test (ViewModel)
 ```kotlin
-@get:Rule val mainDispatcherRule = MainDispatcherRule()
-```
+// Path: src/test/java/com/example/app/MainViewModelTest.kt
 
-### Robot Pattern (Ejemplo)
-```kotlin
-fun login(func: LoginRobot.() -> Unit) = LoginRobot().apply(func)
-class LoginRobot {
-    fun typeEmail(email: String) { /* Espresso ViewAction */ }
-    fun clickLogin() { /* Espresso ViewAction */ }
-    fun matchError(text: String) { /* Espresso ViewAssertion */ }
-}
-```
+class MainViewModelTest {
+    private val repository: MyRepository = mockk()
+    private lateinit var viewModel: MainViewModel
 
-## 📥 Entrada Esperada
-- Código fuente original.
-- Plan de pruebas de `android-test-planner`.
+    @get:Rule val mainDispatcherRule = MainDispatcherRule()
 
-## 📤 Salida Esperada
-Un bloque de código Kotlin listo para guardar. Si se usa Robot Pattern, incluir la clase Robot dentro del mismo archivo o indicar que se cree separada.
+    @Before
+    fun setup() {
+        viewModel = MainViewModel(repository)
+    }
 
-## Ejemplo de Código Generado
-
-```kotlin
-@Test
-fun `login with invalid credentials shows error`() {
-    login {
-        typeEmail("bad@user.com")
-        typePassword("wrong")
-        clickLogin()
-        matchError("Invalid credentials")
+    @Test
+    fun `load data updates state`() = runTest {
+        // Arrange
+        coEvery { repository.getData() } returns "Success"
+        // Act
+        viewModel.load()
+        // Assert
+        assertEquals("Success", viewModel.state.value)
     }
 }
 ```
