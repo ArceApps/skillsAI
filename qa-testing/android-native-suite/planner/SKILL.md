@@ -1,7 +1,7 @@
 ---
 name: android-test-planner
-description: Analiza código Kotlin Android y diseña una estrategia de pruebas detallada en Español, identificando casos de uso, casos borde y dependencias.
-version: 1.0.0
+description: Analiza código Kotlin Android y diseña una estrategia de pruebas detallada en Español, identificando casos de uso, casos borde y matriz de dispositivos.
+version: 1.1.0
 ---
 
 # Android Test Planner
@@ -23,13 +23,20 @@ Un documento en **Español** que contenga:
 3.  **Matriz de Casos de Prueba:**
     *   **Camino Feliz (Happy Path):** Flujo normal y esperado.
     *   **Casos de Error:** Errores de red, datos nulos, excepciones lanzadas.
-    *   **Casos Borde Android:** Rotación de pantalla (si aplica), recreación de proceso, modo oscuro, ciclo de vida.
-4.  **Estrategia de Datos:** Qué datos de prueba (fixtures) se necesitan preparar.
+    *   **Casos Borde Android:**
+        *   Rotación de pantalla y recreación de configuración.
+        *   Modo Avión / Sin conexión.
+        *   Permisos denegados.
+        *   Modo Oscuro/Claro.
+4.  **Estrategia de Dispositivos (Solo para Instrumentation):**
+    *   Recomendación de API mínima y máxima para probar (ej: API 24 y API 34).
+    *   Factores de forma relevantes (Tablet vs Phone).
 
 ## 🧠 Pautas de Análisis
 - **ViewModel:** Priorizar Unit Tests. Verificar estados de UI (StateFlow/LiveData) y llamadas a repositorios.
 - **Repository/UseCase:** Priorizar Unit Tests. Verificar lógica de negocio y mapeo de datos.
 - **UI (Activity/Fragment):** Priorizar Instrumentation Tests (Espresso). Verificar visualización de elementos y navegación.
+    *   *Sugerencia:* Si la UI es compleja, recomendar el **Robot Pattern**.
 - **Utilidades:** Unit Tests exhaustivos de entradas/salidas.
 
 ## Ejemplo de Salida
@@ -41,7 +48,10 @@ Un documento en **Español** que contenga:
 ## Dependencias: `AuthRepository` (Mock), `AnalyticsTracker` (Mock)
 
 ## Casos de Prueba:
-1.  **[Éxito]** `login(user, pass)` debe emitir estado `Loading` y luego `Success` cuando el repo responde OK.
-2.  **[Error]** `login(user, pass)` debe emitir `Error` con mensaje "Credenciales inválidas" cuando el repo lanza `AuthException`.
-3.  **[Validación]** `login("", "")` no debe llamar al repo y debe emitir estado `ValidationError`.
+1.  **[Éxito]** `login(user, pass)` debe emitir estado `Loading` y luego `Success`.
+2.  **[Error]** `login(user, pass)` debe emitir `Error` con mensaje "Credenciales inválidas".
+3.  **[Borde]** `login` con red caída debe emitir `NetworkError` sin crashear.
+
+## Estrategia de Dispositivos
+No aplica (Unit Test corre en JVM local).
 ```
