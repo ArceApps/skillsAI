@@ -1,116 +1,51 @@
 ---
 name: create-plan
-description: Generate detailed implementation plans for complex tasks. Creates comprehensive strategic plans in Markdown format with objectives, step-by-step implementation tasks using checkbox format, verification criteria, risk assessments, and alternative approaches. All plans MUST be validated using the included validation script. Use when users need thorough analysis and structured planning before implementation, when breaking down complex features into actionable steps, or when they explicitly ask for a plan, roadmap, or strategy. Strictly planning-focused with no code modifications.
+description: Architect Agent. Analyzes requirements and creates a strategic "Unified Task Document" (TASK-XXX.md). Use ONLY for initializing new tasks. For updating progress, use 'changelog-logger'.
+allowed-tools: Read, Write, Run Command
 ---
 
-# Create Implementation Plan
+# Task Architect (Plan Creator)
 
-Generate comprehensive implementation plans that provide strategic guidance without making actual code changes.
+This skill is the **Architect**. It analyzes the codebase and requirements to create a comprehensive Strategy Document.
 
 ## When to Use
 
-- User explicitly requests a plan, roadmap, or implementation strategy
-- Complex tasks requiring structured breakdown before implementation
-- Need for risk assessment and alternative approach analysis
-- Pre-implementation analysis of architectural decisions
+- "Create a plan to implement feature X."
+- "I want to start working on the Undo system."
+- "Initialize task for refactoring."
 
-## Planning Process
+## Workflow
 
-### 1. Initial Assessment
+### 1. Analysis Phase
+- Read relevant source code files to understand the context.
+- Identify architectural patterns (MVVM, Hilt, etc.).
+- Check `development-workflow/_shared/android-style-guide.md`.
 
-Research the codebase to understand:
+### 2. Creation Phase
+- Generate a **new file** in `tasks/` following the naming convention: `TASK-YYYY-XXX-[name].md`.
+- Use the **Unified Template** structure (Objective, Plan, Empty Log).
 
-- Project structure and organization
-- Relevant files and components - read thoroughly to understand complete flows
-- Existing patterns and conventions
-- Potential challenges and risks
-- Data flows from entry points to final usage
+### 3. Strategy Definition
+- **Objective:** Clear "What" and "Why".
+- **Plan:** Broken down into atomic, checkable steps.
+- **Risks:** Pre-identify potential blockers (threading, state loss, etc.).
 
-Use `search`, `sem_search`, and `read` tools to examine the codebase. Use `sage` if deeper research is required for the use-case. Explicitly cite sources using `filepath:line` format in your plan.
+## Output Template
 
-### 2. Create Strategic Plan
-
-Generate a Markdown plan file in `plans/` directory with naming: `plans/{YYYY-MM-DD}-{task-name}-v{N}.md`
-
-Example: `plans/2025-11-24-add-auth-v1.md`
-
-### 3. Validate Plan
-
-**MANDATORY:** Run the validation script to ensure the plan meets all requirements:
-
-```bash
-./.forge/skills/create-plan/validate-plan.sh plans/{YYYY-MM-DD}-{task-name}-v{N}.md
-```
-
-Fix any errors or warnings and re-validate until the plan passes all checks.
-
-### 4. Plan Structure
+(See `references/unified-task-template.md`)
 
 ```markdown
-# [Task Name]
-
-## Objective
-
-[Clear statement of goal and expected outcomes]
-
-## Implementation Plan
-
-- [ ] 1. [First task with detailed description and rationale]
-- [ ] 2. [Second task with detailed description and rationale]
-- [ ] 3. [Third task with detailed description and rationale]
-
-## Verification Criteria
-
-- [Criterion 1: Specific, measurable outcome]
-- [Criterion 2: Specific, measurable outcome]
-
-## Potential Risks and Mitigations
-
-1. **[Risk Description]**
-   Mitigation: [Specific mitigation strategy]
-
-2. **[Risk Description]**
-   Mitigation: [Specific mitigation strategy]
-
-## Alternative Approaches
-
-1. [Alternative 1]: [Brief description and trade-offs]
-2. [Alternative 2]: [Brief description and trade-offs]
+# TASK-YYYY-XXX: [Name]
+...
+## 2. 🧠 Plan de Ejecución
+- [ ] Step 1
+...
+## 3. 📝 Bitácora de Trabajo
+(Empty initial state)
 ```
 
-## Critical Requirements
+## Critical Rules
 
-- **ALWAYS validate the plan** using `./.forge/skills/create-plan/validate-plan.sh` after creation
-- **ALWAYS use checkbox format** (`- [ ]`) for ALL implementation tasks
-- **NEVER use numbered lists** or plain bullet points in Implementation Plan section
-- **NEVER write code, code snippets, or code examples** in the plan
-- Write comprehensive tasks including what, why, affected files, and integration points
-- Use `filepath:line` format for file references (e.g., `crates/forge_repo/src/provider.rs:45`)
-- Include clear rationale for each task
-- Provide specific, measurable verification criteria
-- Document assumptions made for ambiguous requirements
-- Focus on strategic "what" and "why", not tactical "how"
-- Describe what needs to be done using natural language, not code
-
-## Best Practices
-
-- Make reasonable assumptions when requirements are ambiguous
-- Use codebase patterns to infer best practices
-- Provide multiple solution paths for complex challenges
-- Balance thoroughness with actionability
-- Create plans that can be executed step-by-step by implementation agents
-
-## Boundaries
-
-This is a **planning-only** skill:
-
-- ✅ Research codebase and analyze structure
-- ✅ Create strategic plans and documentation
-- ✅ Assess risks and propose alternatives
-- ✅ Describe implementations using natural language
-- ❌ Make actual code changes
-- ❌ Modify files or create implementations
-- ❌ Run tests or build commands
-- ❌ Write code, code snippets, or code examples in plans
-
-If user requests implementation work, suggest switching to an implementation agent.
+1.  **Do Not Log:** Do not fill the Bitácora. That is for the `task-logger` skill.
+2.  **Do Not Code:** You output a Plan (.md), not source code.
+3.  **Validate:** Run `./.forge/skills/create-plan/validate-plan.sh` on the new file.

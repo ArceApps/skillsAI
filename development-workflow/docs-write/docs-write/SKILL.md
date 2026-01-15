@@ -1,96 +1,65 @@
 ---
 name: docs-write
-description: Write documentation following Metabase's conversational, clear, and user-focused style. Use when creating or editing documentation files (markdown, MDX, etc.).
+description: Write technical documentation for Android projects (Kotlin, Compose, Hilt). Focuses on clarity, MVVM architecture explanation, and "Human-readable" technical guides.
 allowed-tools: Read, Write, Grep, Bash, Glob
 ---
 
-# Documentation Writing Skill
+# Documentation Writing Skill (Android Edition)
 
-@./../_shared/metabase-style-guide.md
+@./../../_shared/android-style-guide.md
 
 ## When writing documentation
 
 ### Start here
 
-1. **Who is this for?** Match complexity to audience. Don't oversimplify hard things or overcomplicate simple ones.
-2. **What do they need?** Get them to the answer fast. Nobody wants to be in docs longer than necessary.
-3. **What did you struggle with?** Those common questions you had when learning? Answer them (without literally including the question).
+1.  **Audience:** Usually other Android developers or your future self.
+2.  **Architecture:** Always respect the MVVM pattern. Explicitly mention where logic lives (ViewModel) vs where UI lives (Compose).
+3.  **Dependencies:** Clarify Hilt scopes (`Singleton` vs `ViewModel`) and Room relationships.
 
 ### Writing process
 
 **Draft:**
-
-- Write out the steps/explanation as you'd tell a colleague
-- Lead with what to do, then explain why
-- Use headings that state your point: "Set SAML before adding users" not "SAML configuration timing"
-
-**Edit:**
-
-- Read aloud. Does it sound like you talking? If it's too formal, simplify.
-- Cut anything that doesn't directly help the reader
-- Check each paragraph has one clear purpose
-- Verify examples actually work (don't give examples that error)
+- Explain the **Why** before the **How**.
+- Identify the input parameters (Compose) or injected dependencies (Hilt).
+- Define the State (`UiState`) clearly.
 
 **Polish:**
+- Use **Bold** for UI elements (e.g., **Login Button**).
+- Use `backticks` for Kotlin classes/functions (e.g., `UserViewModel`, `collectAsState`).
+- Ensure code snippets are valid Kotlin.
 
-- Make links descriptive (never "here")
-- Backticks only for code/variables, **bold** for UI elements
-- American spelling, serial commas
-- Keep images minimal and scoped tight
+### Common patterns (Android)
 
-**Format:**
-
-- Run prettier on the file after making edits: `yarn prettier --write <file-path>`
-- This ensures consistent formatting across all documentation
-
-### Common patterns
-
-**Instructions:**
+**Describing a Composable:**
 
 ```markdown
-Run:
-\`\`\`
-command-to-run
-\`\`\`
+### `UserCard`
 
-Then:
-\`\`\`
-next-command
-\`\`\`
+Displays user info. Handles its own expansion state but delegates clicks.
 
-This ensures you're getting the latest changes.
+**Parameters:**
+- `user`: The `User` domain object.
+- `onCardClick`: Lambda triggered when tapping the card content.
 ```
 
-Not: "(remember to run X before Y...)" buried in a paragraph.
+**Describing a Flow:**
 
-**Headings:**
-
-- "Use environment variables for configuration" ✅
-- "Environment variables" ❌ (too vague)
-- "How to use environment variables for configuration" ❌ (too wordy)
-
-**Links:**
-
-- "Check out the [SAML documentation](link)" ✅
-- "Read the docs [here](link)" ❌
+```markdown
+The `usersFlow` emits updates from the Room database.
+It is collected in the UI using `collectAsStateWithLifecycle()` to be lifecycle-aware.
+```
 
 ### Watch out for
 
-- Describing tasks as "easy" (you don't know the reader's context)
-- Using "we" when talking about Metabase features (use "Metabase" or "it")
-- Formal language: "utilize", "reference", "offerings"
-- Too peppy: multiple exclamation points
-- Burying the action in explanation
-- Code examples that don't work
-- Numbers that will become outdated
+- **State Hoisting violations:** Don't document logic inside a Composable if it belongs in the ViewModel.
+- **Obsolete XML terms:** Avoid "Fragment" or "Activity" if working purely in Compose, unless interfacing with legacy code.
+- **Vague types:** Don't say "data", say "List<User>".
 
 ### Quick reference
 
-| Write This                 | Not This           |
-| -------------------------- | ------------------ |
-| people, companies          | users              |
-| summarize                  | aggregate          |
-| take a look at             | reference          |
-| can't, don't               | cannot, do not     |
-| **Filter** button          | \`Filter\` button  |
-| Check out [the docs](link) | Click [here](link) |
+| Write This (Español) | Not This |
+| -------------------- | -------- |
+| `función composable` | widget, view |
+| `recopilar flujo`    | escuchar stream |
+| **Pantalla de Inicio** | Screen de Inicio |
+| `ViewModelScoped`    | scoped to viewmodel |
