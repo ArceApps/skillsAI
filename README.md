@@ -20,3 +20,11 @@ El repositorio está organizado en categorías funcionales:
 ## 🚀 Uso
 
 Estas skills están diseñadas para ser consumidas por agentes de IA para asistir en tareas específicas de ingeniería de software.
+
+## Colección personal y procedencia
+
+Esta es una recopilación personal que mantengo para utilizarla en mis propios proyectos junto con SpecAI. Algunas skills son originales y otras son copias o adaptaciones de proyectos con licencias que lo permiten. Cada adaptación puede incorporar cambios para mi flujo SpecAI o para desarrollo mobile, pero conserva el enlace a la fuente, la autoría y la licencia que corresponden.
+
+El catálogo se puede usar libremente respetando las licencias de cada skill. Consulta [CREDITS.md](./CREDITS.md) antes de redistribuir o modificar contenido de terceros.
+
+La carpeta [`upstream/android-skills`](./upstream/android-skills/) conserva el catálogo público de skills de Android; las copias y adaptaciones de esta colección pueden evolucionar de forma independiente.

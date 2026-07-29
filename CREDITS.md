@@ -7,5 +7,6 @@ Adapted sources:
 - [Android Skills](https://github.com/android/skills) — Android team, Apache-2.0. The upstream catalogue is preserved under `upstream/android-skills/`.
 - [karpathy-llm-wiki](https://github.com/Astro-Han/karpathy-llm-wiki) — Astro-Han, MIT. Preserved under `upstream/karpathy-llm-wiki/`.
 - [ponytail](https://github.com/DietrichGebert/ponytail) — Dietrich Gebert, MIT. Preserved under `upstream/ponytail/`.
+- [SpecAI](https://github.com/ArceApps/specai) — workflow de entrevista de diseño desarrollado para SpecAI y adaptado aquí como `grill-me` para refinar tareas y proyectos mobile; esta entrada es una adaptación personal, no una copia del catálogo upstream.
 
 These copies are maintained for personal project use and may be adapted or combined. The original source, authorship and licence notices remain part of the collection. Adapted files must document what changed and why.
